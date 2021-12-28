@@ -6,27 +6,20 @@ import { LinearGradient } from 'expo-linear-gradient';
 const Question = (props) => {
   const questionAndAnswer = props.question + '\n Svar: ' + props.answer
   const { timeLeft } = props
-  const [timer, setTimer] = useState(timeLeft);
-  
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setTimer(timer-1)}, 1000);
-    return () => {
-      clearInterval(interval);
-    }
-  })
+  const [timer, setTimer] = useState(timeLeft)
+
 
   return (
     <View>
       
-      <LinearGradient
+      <LinearGradient 
         // Background Linear Gradient
         colors={['#020024', '#090979', '#00d4ff']}
         style={styles.gradient}
       >
       <View style={styles.counterContainer}>
         <Text style= {styles.counter}>
-          {timer}
+          {timeLeft}
         </Text>
       </View>
       <View style= {styles.textContainer}>

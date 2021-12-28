@@ -13,19 +13,21 @@ export default function EndScreen(props) {
   const message = "Du fick " + points +"/"+possiblePoints + " poäng!"
   return (
     <View style={styles.container}>
-      <LinearGradient
-        // Background Linear Gradient
-        colors={['#020024', '#090979', '#00d4ff']}
-        style={styles.gradient}
-      >
-        <View style= {styles.textContainer}>
-          <Text 
-            style = {styles.text}
-          > {message}
-          </Text>
-        </View>
-      </LinearGradient>
-      <StatusBar style="auto" />
+      <TouchableOpacity onPress={() => 
+                                      navigation.navigate('landing')}>
+        <LinearGradient
+          // Background Linear Gradient
+          colors={['#020024', '#090979', '#00d4ff']}
+          style={styles.gradient}
+        >
+          <View style= {styles.textContainer}>
+            <Text 
+              style = {styles.text}
+            > {message}
+            </Text>
+          </View>
+        </LinearGradient>
+      </TouchableOpacity>
     </View>
   );
 }

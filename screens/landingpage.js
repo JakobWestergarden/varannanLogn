@@ -10,9 +10,7 @@ import questionRandomizer from "../helperfunctions/questionRandomizer";
 export default function LandingPage() {
   const navigation = useNavigation();
   const message = "Hej! \n Vilket gamemode vill ni spela?"
-  const questions = questionRandomizer();
-  let endTime;
-
+  const timeLeft = 30;
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -27,14 +25,15 @@ export default function LandingPage() {
         </Text>
       </View>
       <TouchableOpacity style = {styles.modecontainerNormal}
-                        onPress= {() => 
+                        onPress= {() => {
+                          const questions = questionRandomizer();
                           navigation.navigate('questions', {
-                            questionNbr: 1,
+                            questionNbr: 0,
                             correctAnswer: "fel", 
                             points: 0, 
                             questions: questions,
-                            endTime: endTime
-                          })}>
+                            timeLeft: timeLeft,
+                          })}}>
 
         <Mode text='Normal mode'></Mode>
       </TouchableOpacity>

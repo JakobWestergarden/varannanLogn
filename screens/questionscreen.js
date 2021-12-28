@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useEffect, useState} from "react";
 import { StyleSheet, Text, View, TouchableOpacity,SafeAreaView } from 'react-native';
 import Question from '../components/Question'
 import Answer from '../components/Answer';
@@ -11,38 +11,47 @@ export default function QuestionScreen(props) {
   let { correctAnswer } = props.route.params 
   let { points } = props.route.params
   const { questions } = props.route.params
-  let { endTime } = props.route.params
-  const question = questions.pop();
+  const { timeLeft } = props.route.params
+
+  const question = questions[questionNbr];
   correctAnswer = switcher(correctAnswer);
+  const [timer, setTimer] = useState(timeLeft);
+  let lastTick = new Date();
 
-  if (questions.length === 9) {
-    endTime = new Date();
-    endTime.setSeconds(endTime.getSeconds() + 30);
-    endTime = endTime.getTime()
-  }
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (timer >= 0) {
+        setTimer(timer-1)
+      }
+    }, 1000);
+    return () => {
+      clearInterval(interval);
+    }
+  })
 
-  const timeLeft =  Math.round((endTime - (new Date().getTime())) / 1000);
 
 
   return (
     <SafeAreaView style={styles.container}>
       <TouchableOpacity
                           onPress= {() => console.log(questions.length)}>
-      <Question question = {question.question} answer = {question.answer} timeLeft ={timeLeft}/>
+      <Question question = {question.question} answer = {question.answer} timeLeft ={timer}/>
       </TouchableOpacity>
       <View style = {[styles.container, {
         flexDirection: "row", 
       }]}>
         <TouchableOpacity style={{flex: 1}}
                           onPress= {() => {
+                              timeToNextCycle = 1000 - (new Date() - lastTick.getTime());
+                              console.log({timer})
                               if (correctAnswer === "rätt") {
                                 navigation.navigate("correct", { 
                                   questionNbr: questionNbr,
                                   correctAnswer: "rätt", 
                                   points: points + 1, 
                                   questions: questions, 
-                                  question: question,
-                                  endTime: endTime,
+                                  timeLeft: timer,
+                                  timeToNextCycle: timeToNextCycle,
                                 })
                               } else {
                                 navigation.navigate("incorrect", {
@@ -50,8 +59,7 @@ export default function QuestionScreen(props) {
                                   correctAnswer: "rätt", 
                                   points: points, 
                                   questions: questions, 
-                                  question: question,
-                                  endTime: endTime,
+                                  timeLeft: timer,
                                 })
                               }
                             }
@@ -60,6 +68,7 @@ export default function QuestionScreen(props) {
         </TouchableOpacity>
         <TouchableOpacity style={{flex: 1}}
                           onPress= {() => {
+                            timeToNextCycle = 1000 - (new Date() - lastTick.getTime());
                             if (correctAnswer === "fel") {
                               navigation.navigate("correct", {
                                 questionNbr: questionNbr, 
@@ -67,7 +76,8 @@ export default function QuestionScreen(props) {
                                 points: points + 1, 
                                 questions: questions, 
                                 question: question,
-                                endTime: endTime,
+                                timeLeft: timer,
+                                timeToNextCycle: timeToNextCycle,
                               })
                             } else {
                               navigation.navigate("incorrect", {
@@ -76,7 +86,8 @@ export default function QuestionScreen(props) {
                                 points: points, 
                                 questions: questions, 
                                 question: question,
-                                endTime: endTime
+                                timeLeft: timer,
+                                timeToNextCycle: timeToNextCycle,
                               })
                             }
                           }
