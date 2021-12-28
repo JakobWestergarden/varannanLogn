@@ -4,12 +4,12 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { RFPercentage, RFValue } from "react-native-responsive-fontsize";
 import { Button } from 'react-native-web';
 
-const AnswerCorrect = () => {
+const Answer = (props) => {
   return (
     <View style={styles.gradientContainer}>
       <LinearGradient
         // Background Linear Gradient
-        colors={['#6EB800', '#467500', '#84DB00']}
+        colors={props.color}
         style={styles.gradient}
       >
         <View style= {styles.textContainer}>
@@ -19,7 +19,7 @@ const AnswerCorrect = () => {
             numberOfLines ={4}
             minimumFontScale={0.1}
           >
-            Rätt
+            {props.text}
           </Text>
         </View>
       </LinearGradient> 
@@ -51,4 +51,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default AnswerCorrect;
+export default Answer;
